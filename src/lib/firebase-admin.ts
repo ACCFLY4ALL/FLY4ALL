@@ -1,56 +1,39 @@
+import * as admin from 'firebase-admin';
 
-'use server'
+const privateKey = process.env.FIREBASE_PRIVATE_KEY;
 
-import { App, cert, getApp, getApps, initializeApp, ServiceAccount } from 'firebase-admin/app';
-import { Auth, getAuth } from 'firebase-admin/auth';
-import { Firestore, getFirestore } from 'firebase-admin/firestore';
-import { getStorage } from 'firebase-admin/storage';
-import { serviceAccount } from './firebase-service-account';
-
-// Holds the single initialized Firebase app instance.
-let firebaseAdminApp: App | null = null;
-
-async function getFirebaseAdminApp(): Promise<App> {
-    if (firebaseAdminApp) {
-        return firebaseAdminApp;
-    }
-
-    // If an app is already initialized, use it.
-    if (getApps().length > 0) {
-        firebaseAdminApp = getApp();
-        return firebaseAdminApp;
-    }
-    
-    // Validate service account credentials from the imported object
-    if (!serviceAccount || !serviceAccount.projectId || !serviceAccount.privateKey || !serviceAccount.clientEmail) {
-        console.error("Firebase Admin SDK Service Account is not set or is invalid in environment variables.");
-        throw new Error("Default Firebase service account is not set or is invalid in environment variables.");
-    }
-
-    try {
-        const app = initializeApp({
-            credential: cert(serviceAccount),
-            storageBucket: `${serviceAccount.projectId}.appspot.com`,
-        });
-        firebaseAdminApp = app;
-        return app;
-    } catch (error: any) {
-        console.error(`Failed to initialize Firebase Admin SDK: ${error.message}`);
-        throw new Error(`Firebase Admin SDK initialization failed: ${error.message}`);
-    }
+if (!admin.apps.length) {
+  if (privateKey) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: privateKey.replace(/\\n/g, '\n'),
+      }),
+      databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
+      storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
+    });
+  } else {
+    console.warn('Firebase Admin private key is not set. Admin features will be disabled.');
+  }
 }
 
-export async function getDb(): Promise<Firestore> {
-  const app = await getFirebaseAdminApp();
-  return getFirestore(app);
+const getDb = () => {
+  if (admin.apps.length > 0) {
+    return admin.firestore();
+  } 
+  // This will be logged on the server, so it's safe to log the warning here.
+  console.warn('Firebase Admin is not initialized. Cannot get Firestore instance.');
+  return null; 
+};
+
+const getStorageAdmin = () => {
+  if (admin.apps.length > 0) {
+    return admin.storage();
+  }
+  console.warn('Firebase Admin is not initialized. Cannot get Storage instance.');
+  return null;
 }
 
-export async function getAuthAdmin(): Promise<Auth> {
-  const app = await getFirebaseAdminApp();
-  return getAuth(app);
-}
-
-export async function getStorageAdmin(): Promise<any> {
-  const app = await getFirebaseAdminApp();
-  return getStorage(app);
-}
+export { getDb, getStorageAdmin };
+export default admin;
