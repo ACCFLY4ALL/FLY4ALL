@@ -18,9 +18,12 @@ const initializeFirebaseAdmin = () => {
             throw new Error("FIREBASE_PRIVATE_KEY environment variable is not set.");
         }
 
+        // Correctly format the private key for both local and deployment environments
+        const formattedPrivateKey = privateKey.includes('\\n') ? privateKey.replace(/\\n/g, '\n') : privateKey;
+
         const serviceAccount = {
             projectId: process.env.FIREBASE_PROJECT_ID,
-            privateKey: privateKey.replace(/\\n/g, '\n'),
+            privateKey: formattedPrivateKey,
             clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
         } as admin.ServiceAccount;
 
