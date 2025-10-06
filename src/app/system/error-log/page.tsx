@@ -44,7 +44,7 @@ export default async function ErrorLogPage() {
                     عرض لجميع الأخطاء والتحذيرات التي تم تسجيلها في النظام للمراجعة والتحليل.
                 </CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="relative">
                 <ErrorLogContent initialLogs={logs || []} />
             </CardContent>
         </Card>
@@ -52,3 +52,4 @@ export default async function ErrorLogPage() {
 }
 
 // HMR Refresh Comment
+
