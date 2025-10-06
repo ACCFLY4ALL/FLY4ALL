@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import * as React from 'react';
@@ -7,7 +6,7 @@ import type { Voucher, Client, Supplier, Box, User, AppSettings, VoucherListSett
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { PlusCircle, FileText, Search, Filter } from "lucide-react";
-import VouchersTable from './components/vouchers-table';
+import VouchersTable from '@/app/accounts/vouchers/list/components/vouchers-table';
 import NewStandardReceiptDialog from '@/app/accounts/vouchers/components/new-standard-receipt-dialog';
 import NewPaymentVoucherDialog from '@/app/accounts/vouchers/components/new-payment-voucher-dialog';
 import NewExpenseVoucherDialog from '@/app/accounts/vouchers/components/new-expense-voucher-dialog';
@@ -15,7 +14,7 @@ import NewJournalVoucherDialog from '@/app/accounts/vouchers/components/new-jour
 import NewDistributedReceiptDialog from '@/app/accounts/vouchers/components/new-distributed-receipt-dialog';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuSub, DropdownMenuSubTrigger, DropdownMenuSubContent, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import VouchersListSettingsDialog from './components/vouchers-list-settings-dialog';
+import VouchersListSettingsDialog from '@/app/accounts/vouchers/list/components/vouchers-list-settings-dialog';
 import { updateSettings } from '@/app/settings/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -117,4 +116,3 @@ const VouchersListContent = ({ initialVouchers, settings, clients, suppliers, us
 };
 
 export default VouchersListContent;
-

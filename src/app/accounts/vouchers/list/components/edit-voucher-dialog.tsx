@@ -1,8 +1,7 @@
 
-
 "use client";
 
-import React, from 'react';
+import React from 'react';
 import {
   Dialog,
   DialogContent,
@@ -138,7 +137,7 @@ export default function EditVoucherDialog({ voucherId, onVoucherUpdated, open, o
     
     const payeeOptions = [
       ...clients.map(c => ({ value: c.id, label: `عميل: ${c.name}` })),
-      ...suppliers.map(s => ({ value: s.id, label: `مورد: ${s.name}` })),
+      ...suppliers.map(s => ({ value: s.id, label: `مورد: ${s.name}` }))
     ];
 
      const accountOptions = [

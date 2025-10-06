@@ -1,15 +1,14 @@
 
-
 "use client";
 
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Checkbox } from '@/components/ui/checkbox';
-import type { Voucher } from '../actions';
+import type { Voucher } from '@/app/accounts/vouchers/list/actions';
 import { Button } from '@/components/ui/button';
 import { MoreVertical, Pencil, Trash2, FileText, Eye, Banknote, FileDown, BookUser, GitBranch, ArrowRightLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { deleteVoucher } from '../actions';
+import { deleteVoucher } from '@/app/accounts/vouchers/list/actions';
 import { cn } from '@/lib/utils';
 import {
   AlertDialog,
@@ -23,7 +22,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { buttonVariants } from '@/components/ui/button';
-import EditVoucherDialog from './edit-voucher-dialog';
+import EditVoucherDialog from '@/app/accounts/vouchers/list/components/edit-voucher-dialog';
 import type { VoucherListSettings, VoucherTableColumn } from '@/lib/types';
 import { format, parseISO } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
