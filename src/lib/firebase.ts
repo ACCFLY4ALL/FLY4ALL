@@ -1,7 +1,7 @@
 
-import { initializeApp, getApp, getApps } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { initializeApp, getApp, getApps, type FirebaseApp } from "firebase/app";
+import { getFirestore, type Firestore } from "firebase/firestore";
+import { getStorage, type FirebaseStorage } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -12,9 +12,37 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
-const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const storage = getStorage(app);
+let app: FirebaseApp;
+let db: Firestore;
+let storage: FirebaseStorage;
 
-export { app, db, storage };
+function initialize() {
+  if (getApps().length === 0) {
+    app = initializeApp(firebaseConfig);
+  } else {
+    app = getApp();
+  }
+  db = getFirestore(app);
+  storage = getStorage(app);
+}
+
+export function getDb() {
+  if (!db) {
+    initialize();
+  }
+  return db;
+}
+
+export function getStorage() {
+  if (!storage) {
+    initialize();
+  }
+  return storage;
+}
+
+export function getAppInstance() {
+    if (!app) {
+        initialize();
+    }
+    return app;
+}

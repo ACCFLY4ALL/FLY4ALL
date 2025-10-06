@@ -41,9 +41,6 @@ const initializeFirebaseAdmin = () => {
     }
 };
 
-// Initialize on module load
-initializeFirebaseAdmin();
-
 const getDb = () => {
     if (!db) {
         console.log("Firestore database is not available. Attempting to re-initialize...");

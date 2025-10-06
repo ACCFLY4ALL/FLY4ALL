@@ -112,7 +112,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
 
     const handleLogout = async () => {
         await logoutUser();
-        router.push('/auth/login');
+        router.push('/');
         window.location.reload(); 
     }
 
@@ -133,7 +133,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
                                   <span className="sr-only">Toggle Navigation</span>
                               </Button>
                           </SheetTrigger>
-                          <SheetContent side="right" className="w-[300px] sm:w-[340px] p-0 flex flex-col">
+                          <SheetContent side="right" className="w-[300px] sm:w-[340px] p-0 flex flex-col relative">
                               <SheetHeader className="p-4 border-b shrink-0">
                                   <SheetTitle>القائمة الرئيسية</SheetTitle>
                                   <SheetDescription>
@@ -222,7 +222,7 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         const isPublicPage = pathname === '/';
 
         if (!user && !isAuthPage && !isPublicPage) {
-            router.push('/auth/login');
+            router.push('/');
         }
         
         if (user && (isAuthPage || isPublicPage)) {
@@ -235,11 +235,16 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
         return <Preloader />;
     }
 
+    // Updated Logic: If no user, only allow landing page (`/`) and login pages (`/auth/login`).
+    // The login page itself will handle authenticated users and redirect them to the dashboard.
     if (!user) {
         const isPublicPage = pathname === '/';
-        if (isPublicPage) return <LandingPage />;
-        if (pathname.startsWith('/auth/login')) return <>{children}</>;
-        
+        const isLoginPage = pathname.startsWith('/auth/login');
+
+        if (isPublicPage || isLoginPage) {
+            return <>{children}</>;
+        }
+        // For any other route, show preloader, which will then trigger the redirection logic.
         return <Preloader />;
     }
     

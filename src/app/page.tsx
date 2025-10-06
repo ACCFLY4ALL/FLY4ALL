@@ -1,28 +1,27 @@
 
-"use client";
+import { getCurrentUserFromSession } from './auth/actions';
+import LoginPageClient from '@/components/auth/login-page-client';
+import { redirect } from 'next/navigation';
 
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
-import { useAuth } from '@/context/auth-context';
-import { Loader2 } from 'lucide-react';
+export default async function LoginPage() {
+    const user = await getCurrentUserFromSession();
 
-export default function Home() {
-    const router = useRouter();
-    const { user, loading } = useAuth();
-
-    useEffect(() => {
-        if (!loading) {
-            if (user) {
-                router.replace('/dashboard');
-            } else {
-                router.replace('/auth/login');
-            }
-        }
-    }, [user, loading, router]);
+    if (user) {
+        redirect('/dashboard');
+    }
 
     return (
-        <div className="flex h-screen w-full items-center justify-center bg-background">
-            <Loader2 className="h-10 w-10 animate-spin text-primary" />
+        <div className="w-full min-h-screen lg:grid lg:grid-cols-2">
+            <div className="flex items-center justify-center py-12">
+                <LoginPageClient />
+            </div>
+            <div className="hidden bg-muted lg:block relative">
+                 <div 
+                    className="absolute inset-0 bg-cover bg-center" 
+                    style={{backgroundImage: "url('https://images.unsplash.com/photo-1542314831-068cd1dbb563?q=80&w=2070&auto=format&fit=crop')"}}
+                 />
+                 <div className="absolute inset-0 bg-gradient-to-t from-primary/50 to-transparent"/>
+            </div>
         </div>
     );
 }

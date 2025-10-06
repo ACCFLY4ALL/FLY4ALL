@@ -254,7 +254,7 @@ export default function SmartEntryContent({ clients, suppliers, boxes }: SmartEn
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[2fr,1fr] gap-6 items-start">
              <div className="space-y-4">
-                <Card>
+                <Card className='relative'>
                     <CardHeader>
                         <CardTitle>قائمة انتظار الحجوزات</CardTitle>
                         <CardDescription>هذه هي قائمة التذاكر التي تم تحليلها وجاهزة للمراجعة والحفظ.</CardDescription>
@@ -275,6 +275,7 @@ export default function SmartEntryContent({ clients, suppliers, boxes }: SmartEn
                                 <Progress value={progress} className="h-2 rounded-full" />
                             </div>
                         )}
+                        <ScrollArea className='h-[600px]'>
                         <div className="space-y-4">
                             {processedTickets.map((ticket) => {
                                 const supplierName = suppliers.find(s => s.id === (ticket.financialData.supplierId || unifiedData.supplierId))?.name || 'غير محدد';
@@ -327,7 +328,7 @@ export default function SmartEntryContent({ clients, suppliers, boxes }: SmartEn
                                                                     <p className="font-bold truncate">{p.name}</p>
                                                                     <div className="text-xs text-muted-foreground font-mono flex items-center gap-x-3">
                                                                         <span className="flex items-center gap-1"><Ticket className="h-3 w-3"/>{p.ticketNumber || '-'}</span>
-                                                                        <span className="flex items-center gap-1"><Fingerprint className="h-3 w-3"/>{p.passportNumber || '-'}</span>
+                                                                        <span className="flex items-center gap-1"><Fingerprint className="h-3 w-3"/>{p.passportNumber || '-' }</span>
                                                                         <span className="flex items-center gap-1"><Users className="h-3 w-3"/>{p.passengerType || 'Adult'}</span>
                                                                     </div>
                                                                 </TableCell>
@@ -361,6 +362,7 @@ export default function SmartEntryContent({ clients, suppliers, boxes }: SmartEn
                                     </Card>
                                 )})}
                         </div>
+                        </ScrollArea>
                     </CardContent>
                 </Card>
             </div>
@@ -374,7 +376,8 @@ export default function SmartEntryContent({ clients, suppliers, boxes }: SmartEn
                         <div className="space-y-1.5"><Label>المورد</Label><Autocomplete options={supplierOptions} placeholder="اختر موردًا..." value={unifiedData.supplierId} onValueChange={(v) => setUnifiedData(p => ({...p, supplierId: v}))} /></div>
                         <div className="space-y-1.5"><Label>العميل</Label><Autocomplete options={clientOptions} placeholder="اختر عميلاً..." value={unifiedData.clientId} onValueChange={(v) => setUnifiedData(p => ({...p, clientId: v}))} /></div>
                         <div className="space-y-1.5"><Label>الصندوق</Label><Select value={unifiedData.boxId} onValueChange={(v) => setUnifiedData(p => ({...p, boxId: v}))}><SelectTrigger><SelectValue placeholder="اختر صندوق..." /></SelectTrigger><SelectContent>{boxes.map(b => <SelectItem key={b.id} value={b.id}>{b.name}</SelectItem>)}</SelectContent></Select></div>
-                        <div className="space-y-1.5"><Label>العملة</Label><Select value={unifiedData.currency} onValueChange={(v) => setUnifiedData(p => ({...p, currency: v as Currency}))}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="USD">USD</SelectItem><SelectItem value="IQD">IQD</SelectItem></SelectContent></Select></div>
+                        <div className="space-y-1.5
+                        "><Label>العملة</Label><Select value={unifiedData.currency} onValueChange={(v) => setUnifiedData(p => ({...p, currency: v as Currency}))}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent><SelectItem value="USD">USD</SelectItem><SelectItem value="IQD">IQD</SelectItem></SelectContent></Select></div>
                         <Button className="w-full font-bold bg-[#5b21b6] hover:bg-[#5b21b6]/90" onClick={handleApplyUnifiedData}>تطبيق على الكل</Button>
                     </CardContent>
                  </Card>

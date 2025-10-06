@@ -13,7 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
-import { requestOtp, verifyOtpAndLogin } from "../../actions"
+import { requestOtp, verifyOtpAndLogin } from "@/app/auth/actions"
 
 const phoneSchema = z.object({
   phone: z.string().min(10, { message: "الرجاء إدخال رقم هاتف صحيح." }),

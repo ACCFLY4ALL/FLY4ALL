@@ -1,4 +1,7 @@
 {
+  "functions": {
+    "source": "functions"
+  },
   "hosting": {
     "source": ".",
     "ignore": [
@@ -20,6 +23,7 @@
       "firebase-debug.*.log",
       "functions"
     ],
-    "alwaysDeployFromSource": true
+    "alwaysDeployFromSource": true,
+    "runtime": "nodejs20"
   }
 }

@@ -13,7 +13,7 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
-import { loginUser, verifyOtpAndLogin } from "../../actions"
+import { loginUser, verifyOtpAndLogin } from "@/app/auth/actions"
 import OtpLoginForm from "./otp-login-form";
 import { useAuth } from "@/context/auth-context";
 import { useVoucherNav } from "@/context/voucher-nav-context";
