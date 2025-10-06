@@ -1,39 +1,38 @@
+
 import * as admin from 'firebase-admin';
+// Import the configuration from the file we created
+import { firebaseAdminConfig } from './firebase-admin-config';
 
-const privateKey = process.env.FIREBASE_PRIVATE_KEY;
-
+// Check if the app is already initialized
 if (!admin.apps.length) {
-  if (privateKey) {
+  try {
+    // Use the imported config to initialize the app
     admin.initializeApp({
-      credential: admin.credential.cert({
-        projectId: process.env.FIREBASE_PROJECT_ID,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: privateKey.replace(/\\n/g, '\n'),
-      }),
-      databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
-      storageBucket: `${process.env.FIREBASE_PROJECT_ID}.appspot.com`,
+      credential: admin.credential.cert(firebaseAdminConfig),
+      databaseURL: `https://${firebaseAdminConfig.project_id}.firebaseio.com`,
+      storageBucket: `${firebaseAdminConfig.project_id}.appspot.com`,
     });
-  } else {
-    console.warn('Firebase Admin private key is not set. Admin features will be disabled.');
+    console.log('Firebase Admin SDK initialized successfully.');
+  } catch (error) {
+    console.error('Error initializing Firebase Admin SDK:', error);
   }
 }
 
 const getDb = () => {
   if (admin.apps.length > 0) {
     return admin.firestore();
-  } 
-  // This will be logged on the server, so it's safe to log the warning here.
-  console.warn('Firebase Admin is not initialized. Cannot get Firestore instance.');
-  return null; 
+  }
+  console.error('Firebase Admin is not initialized. Cannot get Firestore instance.');
+  return null;
 };
 
 const getStorageAdmin = () => {
   if (admin.apps.length > 0) {
     return admin.storage();
   }
-  console.warn('Firebase Admin is not initialized. Cannot get Storage instance.');
+  console.error('Firebase Admin is not initialized. Cannot get Storage instance.');
   return null;
-}
+};
 
 export { getDb, getStorageAdmin };
 export default admin;

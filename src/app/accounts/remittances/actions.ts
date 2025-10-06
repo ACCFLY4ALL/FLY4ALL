@@ -42,7 +42,7 @@ export const getRemittances = async (): Promise<Remittance[]> => {
         console.log("Database connection is disabled in settings. Skipping getRemittances fetch.");
         return [];
     }
-    const db = await getDb();
+    const db = getDb();
     if (!db) return [];
 
     try {
@@ -66,7 +66,7 @@ export async function addRemittance(remittanceData: Omit<Remittance, 'id' | 'cre
         return { success: false, error: "User not authenticated." };
     }
     
-    const db = await getDb();
+    const db = getDb();
     if (!db) return { success: false, error: "Database not available." };
 
     try {
@@ -107,7 +107,7 @@ export async function auditRemittance(remittanceId: string, auditNotes: string) 
         return { success: false, error: "User not authenticated." };
     }
 
-    const db = await getDb();
+    const db = getDb();
     if (!db) return { success: false, error: "Database not available." };
 
     try {
@@ -143,7 +143,7 @@ export async function receiveRemittance(remittance: Remittance, boxId: string) {
         return { success: false, error: "User not authenticated." };
     }
     
-    const db = await getDb();
+    const db = getDb();
     if (!db) return { success: false, error: "Database not available." };
 
     const batch = db.batch();
@@ -209,7 +209,7 @@ export async function receiveRemittance(remittance: Remittance, boxId: string) {
 }
 
 export async function updateRemittance(id: string, data: Partial<Remittance>) {
-    const db = await getDb();
+    const db = getDb();
     if (!db) return { success: false, error: "Database not available." };
     const user = await getCurrentUserFromSession();
     if (!user) return { success: false, error: "User not authenticated." };
