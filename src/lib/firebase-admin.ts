@@ -2,11 +2,13 @@
 import admin from 'firebase-admin';
 
 let db: admin.firestore.Firestore | null = null;
+let storage: admin.storage.Storage | null = null;
 
 const initializeFirebaseAdmin = () => {
     if (admin.apps.length > 0) {
         console.log("Firebase Admin SDK already initialized.");
         db = admin.firestore();
+        storage = admin.storage();
         return;
     }
 
@@ -24,16 +26,15 @@ const initializeFirebaseAdmin = () => {
 
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
+            storageBucket: process.env.FIREBASE_STORAGE_BUCKET
         });
 
         console.log("Firebase Admin SDK initialized successfully.");
         db = admin.firestore();
+        storage = admin.storage();
 
     } catch (error) {
         console.error("Firebase Admin SDK initialization error: ", error);
-        // We don't re-throw the error to allow the app to continue running
-        // in case Firebase is not essential for all parts of it.
-        // Functions that need db will handle the null case.
     }
 };
 
@@ -52,4 +53,16 @@ const getDb = () => {
     return db;
 };
 
-export { getDb };
+const getStorageAdmin = () => {
+    if (!storage) {
+        console.log("Firebase Storage is not available. Attempting to re-initialize...");
+        initializeFirebaseAdmin();
+        if (!storage) {
+            console.error("Failed to re-initialize Firebase Storage.");
+            return null;
+        }
+    }
+    return storage;
+}
+
+export { getDb, getStorageAdmin };
