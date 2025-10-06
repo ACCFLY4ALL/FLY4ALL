@@ -16,7 +16,7 @@ export async function getCurrentUserFromSession(): Promise<(User & { uid: string
     
     try {
         const decodedToken = JSON.parse(sessionCookie);
-        const db = await getDb();
+        const db = getDb();
         
         const userDoc = await db.collection(decodedToken.type === 'employee' ? 'users' : 'clients').doc(decodedToken.uid).get();
 
@@ -43,7 +43,7 @@ export async function getCurrentUserFromSession(): Promise<(User & { uid: string
 }
 
 export async function loginUser(identifier: string, password: string, type: 'employee' | 'client'): Promise<{ success: boolean; error?: string; otp_required?: boolean, phone?: string }> {
-    const db = await getDb();
+    const db = getDb();
     
     const collectionName = type === 'employee' ? 'users' : 'clients';
     
@@ -113,7 +113,7 @@ export async function loginUser(identifier: string, password: string, type: 'emp
 }
 
 export async function verifyOtpAndLogin(phone: string, otp: string, type: 'employee' | 'client'): Promise<{ success: boolean; error?: string }> {
-     const db = await getDb();
+     const db = getDb();
      const otpRef = db.collection('otp_requests').doc(phone);
      
      try {
@@ -169,7 +169,7 @@ export async function logoutUser() {
 }
 
 export async function requestPublicAccount(data: Pick<User, 'name' | 'email' | 'phone'>) {
-    const db = await getDb();
+    const db = getDb();
     
     // Check if user already exists
     const emailQuery = await db.collection('users').where('email', '==', data.email).get();
