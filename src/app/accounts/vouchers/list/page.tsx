@@ -3,13 +3,13 @@ import * as React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
-import { getAllVouchers } from '@/app/accounts/vouchers/list/actions';
+import { getAllVouchers } from './actions';
 import { getSettings } from '@/app/settings/actions';
 import { getClients } from '@/app/relations/actions';
 import { getUsers } from '@/app/users/actions';
 import { getBoxes } from '@/app/boxes/actions';
 import type { AppSettings, Box, Client, Supplier, User, Voucher } from '@/lib/types';
-import VouchersListContent from '@/app/accounts/vouchers/list/vouchers-list-content';
+import VouchersListContent from './vouchers-list-content';
 
 
 export default async function VouchersListPage() {

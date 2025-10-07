@@ -42,7 +42,7 @@
     },
     {
       "backendId": "acc-mangmants-web",
-      "rootDir": "/",
+      "rootDir": ".",
       "ignore": [
         "node_modules",
         ".git",

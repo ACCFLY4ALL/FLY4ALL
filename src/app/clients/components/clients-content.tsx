@@ -4,7 +4,7 @@
 import * as React from 'react';
 import type { Client, RelationSection, CompanyPaymentType } from '@/lib/types';
 import AddClientDialog from '@/app/clients/components/add-client-dialog';
-import ClientsTable from './clients-table';
+import ClientsTable, { getColumns } from './clients-table';
 import { Button } from '@/components/ui/button';
 import { LayoutGrid, List, Download, X, Trash2, Loader2, Filter, Settings, PlusCircle, Check } from 'lucide-react';
 import ClientCard from '@/components/clients/components/client-card';
@@ -17,7 +17,6 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { DataTablePagination } from '@/components/ui/data-table-pagination';
 import { useReactTable, getCoreRowModel, getPaginationRowModel, getFilteredRowModel, getFacetedRowModel, getFacetedUniqueValues, getSortedRowModel, type ColumnFiltersState } from '@tanstack/react-table';
-import { getColumns } from './clients-table';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Label } from '@/components/ui/label';
 import { COUNTRIES_DATA } from '@/lib/countries-data';
